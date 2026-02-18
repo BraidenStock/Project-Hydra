@@ -36,6 +36,15 @@ public class PlayerMovement : MonoBehaviour
     private RaycastHit slopeHit;
     private bool exitingSlope;
 
+    [Header("Footsteps")]
+    public AudioSource footstepAudio;
+    public float walkStepInterval = 0.5f;
+    public float sprintStepInterval = 0.35f;
+    public float crouchStepInterval = 0.65f;
+
+    private float stepTimer;
+
+
     public Transform playerOrientation;
 
     float horizontalInput;
@@ -79,6 +88,9 @@ public class PlayerMovement : MonoBehaviour
             rb.linearDamping = groundDrag;
         else
             rb.linearDamping = 0;
+
+        // Handle footsteps
+        HandleFootsteps();
     }
 
     private void FixedUpdate()
@@ -233,5 +245,34 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 GetSlopeMoveDirection()
     {
         return Vector3.ProjectOnPlane(moveDirection, slopeHit.normal).normalized;
+    }
+
+    private void HandleFootsteps()
+    {
+        // Check if player is moving on ground
+        Vector3 flatVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
+        bool isMoving = flatVelocity.magnitude > 0.1f;
+
+        if (grounded && isMoving)
+        {
+            stepTimer -= Time.deltaTime;
+
+            float currentInterval = walkStepInterval;
+
+            if (movementState == MovementState.Sprinting)
+                currentInterval = sprintStepInterval;
+            else if (movementState == MovementState.Crouching)
+                currentInterval = crouchStepInterval;
+
+            if (stepTimer <= 0f)
+            {
+                footstepAudio.Play();
+                stepTimer = currentInterval;
+            }
+        }
+        else
+        {
+            stepTimer = 0f;
+        }
     }
 }
