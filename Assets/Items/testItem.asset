@@ -15,5 +15,6 @@ MonoBehaviour:
   itemName: testItem
   itemIcon: {fileID: 21300000, guid: 2b3943d11d6ba8347b12ea006b51c630, type: 3}
   maxStackSize: 15
-  itemPrefab: {fileID: 0}
+  itemPrefab: {fileID: 3080677201370785164, guid: 9a0a5d0379f463e4f9a0b4797e00d53d, type: 3}
   handItemPrefab: {fileID: 0}
+  description: Just a lil guy
