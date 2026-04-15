@@ -38,9 +38,9 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Footsteps")]
     public AudioSource footstepAudio;
-    public float walkStepInterval = 0.5f;
-    public float sprintStepInterval = 0.35f;
-    public float crouchStepInterval = 0.65f;
+    public float walkStepInterval = 0.7f;
+    public float sprintStepInterval = 0.5f;
+    public float crouchStepInterval = 0.9f;
 
     private float stepTimer;
 
@@ -249,9 +249,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleFootsteps()
     {
-        // Check if player is moving on ground
-        Vector3 flatVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
-        bool isMoving = flatVelocity.magnitude > 0.1f;
+        // Check if player is giving input and on ground
+        bool isMoving = horizontalInput != 0 || verticalInput != 0;
 
         if (grounded && isMoving)
         {
@@ -266,8 +265,11 @@ public class PlayerMovement : MonoBehaviour
 
             if (stepTimer <= 0f)
             {
-                footstepAudio.Play();
-                stepTimer = currentInterval;
+                if (!footstepAudio.isPlaying)
+                {
+                    footstepAudio.Play();
+                    stepTimer = currentInterval;
+                }
             }
         }
         else
