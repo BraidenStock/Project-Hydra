@@ -1,25 +1,45 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1233149941 &-8382653320455209433
+--- !u!1233149941 &-6330069993398883486
 AudioContainerElement:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Walking1_{-8382653320455209433}
+  m_Name: Walking1_{-6330069993398883486}
   m_AudioClip: {fileID: 8300000, guid: 700e3f7b50bb2144789dd6f43df69bc3, type: 3}
   m_Volume: 0
-  m_Enabled: 0
---- !u!1233149941 &-2404137776938921124
+  m_Enabled: 1
+--- !u!1233149941 &-462810201432988857
 AudioContainerElement:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Walking2_{-2404137776938921124}
+  m_Name: Walking2_{-462810201432988857}
   m_AudioClip: {fileID: 8300000, guid: 66271ebc9fbb3d84f82d253ea041379e, type: 3}
   m_Volume: 0
-  m_Enabled: 0
+  m_Enabled: 1
+--- !u!1233149941 &389857567375678453
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Walking3_{389857567375678453}
+  m_AudioClip: {fileID: 8300000, guid: fbe825bef1aa44546a9709d6792fb03b, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1233149941 &3270130917405462490
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Walking4_{3270130917405462490}
+  m_AudioClip: {fileID: 8300000, guid: 04eb4e519f76dfd4e898dbe004e2cb2d, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
 --- !u!1307931743 &6418180475301049370
 AudioRandomContainer:
   m_ObjectHideFlags: 0
@@ -27,8 +47,8 @@ AudioRandomContainer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Walking
-  m_Volume: 0
-  m_Pitch: 0
+  m_Volume: -12
+  m_Pitch: 200
   m_AutomaticTriggerTime: 1.5
   m_LoopCount: 1
   m_VolumeRandomizationRange: {x: 0, y: 0}
@@ -36,36 +56,16 @@ AudioRandomContainer:
   m_AutomaticTriggerTimeRandomizationRange: {x: 0, y: 0}
   m_LoopCountRandomizationRange: {x: 0, y: 0}
   m_Elements:
-  - {fileID: -8382653320455209433}
-  - {fileID: -2404137776938921124}
-  - {fileID: 9212624648557749107}
-  - {fileID: 6946314769866132203}
-  m_AvoidRepeatingLast: 0
+  - {fileID: -6330069993398883486}
+  - {fileID: -462810201432988857}
+  - {fileID: 389857567375678453}
+  - {fileID: 3270130917405462490}
+  m_AvoidRepeatingLast: 2
   m_PlaybackMode: 2
-  m_TriggerMode: 1
+  m_TriggerMode: 0
   m_AutomaticTriggerMode: 1
   m_LoopMode: 2
   m_VolumeRandomizationEnabled: 0
   m_PitchRandomizationEnabled: 0
   m_AutomaticTriggerTimeRandomizationEnabled: 0
   m_LoopCountRandomizationEnabled: 0
---- !u!1233149941 &6946314769866132203
-AudioContainerElement:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Walking4_{6946314769866132203}
-  m_AudioClip: {fileID: 8300000, guid: 04eb4e519f76dfd4e898dbe004e2cb2d, type: 3}
-  m_Volume: 0
-  m_Enabled: 0
---- !u!1233149941 &9212624648557749107
-AudioContainerElement:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Walking3_{9212624648557749107}
-  m_AudioClip: {fileID: 8300000, guid: fbe825bef1aa44546a9709d6792fb03b, type: 3}
-  m_Volume: 0
-  m_Enabled: 1
