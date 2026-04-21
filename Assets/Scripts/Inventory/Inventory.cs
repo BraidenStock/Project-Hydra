@@ -356,4 +356,16 @@ public class Inventory : MonoBehaviour
 
         itemDescriptionParent.SetActive(false);
     }
+
+    public ItemSO GetActiveHotbarItem()
+    {
+        if (hotbarSlots.Count == 0 || activeHotbarIndex >= hotbarSlots.Count)
+            return null;
+
+        Slot activeSlot = hotbarSlots[activeHotbarIndex];
+        if (activeSlot.HasItem())
+            return activeSlot.GetHeldItem();
+
+        return null;
+    }
 }
