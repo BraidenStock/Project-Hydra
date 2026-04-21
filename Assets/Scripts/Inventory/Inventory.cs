@@ -18,8 +18,8 @@ public class Inventory : MonoBehaviour
     public float pickupRange = 3f;
     private Item lookedAtItem = null;
     public Material highlightMaterial;
-    private Material originalMaterial;
-    private Renderer lookedAtItemRenderer;
+    private List<Material> originalMaterials = new List<Material>();
+    private List<Renderer> lookedAtItemRenderers = new List<Renderer>();
 
     private int activeHotbarIndex = 0; //0-3
     public float activeHotbarOpacity = .9f;
@@ -222,9 +222,15 @@ public class Inventory : MonoBehaviour
 
     private void PickupItem()
     {
-        if (lookedAtItemRenderer != null && Input.GetKeyDown(KeyCode.E))
+        if (lookedAtItem != null && Input.GetKeyDown(KeyCode.E))
         {
             Item item = lookedAtItem.GetComponent<Item>();
+            // If Item component not on lookedAtItem, search the hierarchy
+            if (item == null)
+            {
+                item = lookedAtItem.GetComponentInParent<Item>();
+            }
+            
             if (item != null)
             {
                 AddItem(item.item, item.count);
@@ -236,26 +242,41 @@ public class Inventory : MonoBehaviour
 
     private void DetectLookedAtItem()
     {
-        if (lookedAtItemRenderer != null)
+        // Restore original materials
+        for (int i = 0; i < lookedAtItemRenderers.Count; i++)
         {
-            lookedAtItemRenderer.material = originalMaterial;
-            lookedAtItemRenderer = null;
-            originalMaterial = null;
-            lookedAtItem = null;
+            if (lookedAtItemRenderers[i] != null && i < originalMaterials.Count)
+            {
+                lookedAtItemRenderers[i].material = originalMaterials[i];
+            }
         }
+        lookedAtItemRenderers.Clear();
+        originalMaterials.Clear();
+        lookedAtItem = null;
 
         Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
         if (Physics.Raycast(ray, out RaycastHit hit, pickupRange))
         {
             Item item = hit.collider.GetComponent<Item>();
+            // If Item component not on hit object, search up the hierarchy
+            if (item == null)
+            {
+                item = hit.collider.GetComponentInParent<Item>();
+            }
+            
             if (item != null)
             {
-                Renderer renderer = item.GetComponent<Renderer>();
-                if (renderer != null)
+                // Get all renderers in the item and its children
+                Renderer[] renderers = item.GetComponentsInChildren<Renderer>();
+                
+                if (renderers.Length > 0)
                 {
-                    originalMaterial = renderer.material;
-                    renderer.material = highlightMaterial;
-                    lookedAtItemRenderer = renderer;
+                    foreach (Renderer renderer in renderers)
+                    {
+                        originalMaterials.Add(renderer.material);
+                        renderer.material = highlightMaterial;
+                        lookedAtItemRenderers.Add(renderer);
+                    }
                     lookedAtItem = item;
                 }
             }
@@ -344,6 +365,7 @@ public class Inventory : MonoBehaviour
     // Apply offsets
     t.localPosition = item.handLocalPosition;
     t.localRotation = Quaternion.Euler(item.handLocalRotation);
+    t.localScale = item.handLocalScale;
 }
 
     private void UpdateItemDescription()

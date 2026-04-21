@@ -16,4 +16,5 @@ public class ItemSO : ScriptableObject
     [Header("Hand Transform")]
     public Vector3 handLocalPosition;
     public Vector3 handLocalRotation;
+    public Vector3 handLocalScale = Vector3.one;
 }

@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e9109806e412734c806ec1691e6f743, type: 3}
+  m_Name: PickAxe
+  m_EditorClassIdentifier: 
+  itemName: PickAxe
+  itemIcon: {fileID: 0}
+  description: It's a pickaxe and an axe
+  maxStackSize: 1
+  itemPrefab: {fileID: 8798750400212269216, guid: 31ae5e2a9f91e1f4aad08ea497333851, type: 3}
+  handItemPrefab: {fileID: 2580231892027304905, guid: 7a2aa71e823c3d04799873e56c6b5e2d, type: 3}
+  handLocalPosition: {x: 0, y: 0, z: 0}
+  handLocalRotation: {x: 0, y: 180, z: 0}
+  handLocalScale: {x: 0.1, y: 0.1, z: 0.1}
