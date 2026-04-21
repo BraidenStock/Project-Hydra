@@ -1,14 +1,19 @@
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
 
-[CreateAssetMenu(fileName = "Item", menuName = "New Item")]
+[CreateAssetMenu(fileName = "New Item", menuName = "Items/Item")]
 public class ItemSO : ScriptableObject
 {
     public string itemName;
     public Sprite itemIcon;
-    public int maxStackSize;
+    public string description;
+
+    public int maxStackSize = 64;
+
     public GameObject itemPrefab;
     public GameObject handItemPrefab;
-    public string description;
+
+    // ✅ ADD THESE
+    [Header("Hand Transform")]
+    public Vector3 handLocalPosition;
+    public Vector3 handLocalRotation;
 }

@@ -24,9 +24,13 @@ public class Inventory : MonoBehaviour
     private int activeHotbarIndex = 0; //0-3
     public float activeHotbarOpacity = .9f;
     public float normalHotbarOpacity = .5f;
+
+    [Header("Hand Settings")]
     public Transform hand;
+    public Vector3 handOffset = new Vector3(0.3f, -0.3f, 1.0f); // 👈 adjustable distance
     private GameObject equippedHandItem;
 
+    [Header("Item Description UI")]
     public GameObject itemDescriptionParent;
     public Image itemDescriptionIcon;
     public TextMeshProUGUI itemDescriptionNameText;
@@ -48,9 +52,19 @@ public class Inventory : MonoBehaviour
         allSlots.AddRange(hotbarSlots);
     }
 
+    private void Start()
+    {
+        // ✅ Attach hand to camera and apply offset
+        if (hand != null && Camera.main != null)
+        {
+            hand.SetParent(Camera.main.transform);
+            hand.localPosition = handOffset;
+            hand.localRotation = Quaternion.identity;
+        }
+    }
+
     void Update()
     {
-
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             container.SetActive(!container.activeInHierarchy);
@@ -128,9 +142,8 @@ public class Inventory : MonoBehaviour
                 draggedSlot = hoveredSlot;
                 isDragging = true;
 
-                //Show the dragged item icon
                 draggedItemIcon.sprite = hoveredSlot.GetHeldItem().itemIcon;
-                draggedItemIcon.color = new Color(1, 1, 1, 1); // Make the icon visible
+                draggedItemIcon.color = new Color(1, 1, 1, 1);
                 draggedItemIcon.enabled = true;
             }
         }
@@ -146,7 +159,7 @@ public class Inventory : MonoBehaviour
             {
                 HandleDrop(draggedSlot, hoveredSlot);
 
-                draggedItemIcon.enabled = false; // Disable the dragged slot to prevent interaction during the drop
+                draggedItemIcon.enabled = false;
 
                 draggedSlot = null;
                 isDragging = false;
@@ -159,9 +172,7 @@ public class Inventory : MonoBehaviour
         foreach (Slot slot in allSlots)
         {
             if (slot.hovering)
-            {
                 return slot;
-            }
         }
         return null;
     }
@@ -171,7 +182,6 @@ public class Inventory : MonoBehaviour
         if (toSlot == fromSlot)
             return;
 
-        //Stacking logic
         if (toSlot.HasItem() && toSlot.GetHeldItem() == fromSlot.GetHeldItem())
         {
             int max = toSlot.GetHeldItem().maxStackSize;
@@ -184,15 +194,12 @@ public class Inventory : MonoBehaviour
                 fromSlot.SetHeldItem(fromSlot.GetHeldItem(), fromSlot.GetHeldItemCount() - amountToMove);
 
                 if (fromSlot.GetHeldItemCount() <= 0)
-                {
                     fromSlot.ClearSlot();
-                }
 
                 return;
             }
         }
 
-        //Swap logic
         if (toSlot.HasItem())
         {
             ItemSO tempItem = toSlot.GetHeldItem();
@@ -200,11 +207,9 @@ public class Inventory : MonoBehaviour
 
             toSlot.SetHeldItem(fromSlot.GetHeldItem(), fromSlot.GetHeldItemCount());
             fromSlot.SetHeldItem(tempItem, tempCount);
-
             return;
         }
 
-        //Empty slot logic
         toSlot.SetHeldItem(fromSlot.GetHeldItem(), fromSlot.GetHeldItemCount());
         fromSlot.ClearSlot();
     }
@@ -212,9 +217,7 @@ public class Inventory : MonoBehaviour
     private void UpdateDraggedItemPosition()
     {
         if (isDragging)
-        {
             draggedItemIcon.transform.position = Input.mousePosition;
-        }
     }
 
     private void PickupItem()
@@ -298,7 +301,11 @@ public class Inventory : MonoBehaviour
 
         if (prefab == null) return;
 
-        GameObject droppedItem = Instantiate(prefab, Camera.main.transform.position + Camera.main.transform.forward, Quaternion.identity);
+        GameObject droppedItem = Instantiate(
+            prefab,
+            Camera.main.transform.position + Camera.main.transform.forward,
+            Quaternion.identity
+        );
 
         Item item = droppedItem.GetComponent<Item>();
         if (item != null)
@@ -308,33 +315,36 @@ public class Inventory : MonoBehaviour
         }
 
         activeSlot.ClearSlot();
-
         EquipHandItem();
     }
 
     private void EquipHandItem()
-    {
-        if (equippedHandItem != null)
-        {
-            Destroy(equippedHandItem);
-        }
+{
+    if (equippedHandItem != null)
+        Destroy(equippedHandItem);
 
-        Slot activeSlot = hotbarSlots[activeHotbarIndex];
+    Slot activeSlot = hotbarSlots[activeHotbarIndex];
 
-        if (!activeSlot.HasItem())
-            return;
+    if (!activeSlot.HasItem())
+        return;
 
-        ItemSO item = activeSlot.GetHeldItem();
+    ItemSO item = activeSlot.GetHeldItem();
 
-        if (item.handItemPrefab == null)
-        {
-            return;
-        }
+    if (item.handItemPrefab == null)
+        return;
 
-        equippedHandItem = Instantiate(item.handItemPrefab, hand);
-        equippedHandItem.transform.localPosition = Vector3.zero;
-        equippedHandItem.transform.localRotation = Quaternion.identity;
-    }
+    equippedHandItem = Instantiate(item.handItemPrefab, hand);
+
+    // Clean base transform
+    Transform t = equippedHandItem.transform;
+    t.localPosition = Vector3.zero;
+    t.localRotation = Quaternion.identity;
+    t.localScale = Vector3.one;
+
+    // Apply offsets
+    t.localPosition = item.handLocalPosition;
+    t.localRotation = Quaternion.Euler(item.handLocalRotation);
+}
 
     private void UpdateItemDescription()
     {
@@ -344,7 +354,7 @@ public class Inventory : MonoBehaviour
         {
             ItemSO hoveredItem = hoveredSlot.GetHeldItem();
 
-            if(hoveredItem != null)
+            if (hoveredItem != null)
             {
                 itemDescriptionParent.SetActive(true);
                 itemDescriptionIcon.sprite = hoveredItem.itemIcon;
