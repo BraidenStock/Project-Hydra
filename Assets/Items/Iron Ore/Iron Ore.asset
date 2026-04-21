@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7e9109806e412734c806ec1691e6f743, type: 3}
-  m_Name: PickAxe
+  m_Name: Iron Ore
   m_EditorClassIdentifier: 
-  itemName: PickAxe
+  itemName: Iron Ore
   itemIcon: {fileID: 0}
-  description: It's a pickaxe and an axe
-  maxStackSize: 1
-  itemPrefab: {fileID: 8798750400212269216, guid: 31ae5e2a9f91e1f4aad08ea497333851, type: 3}
-  handItemPrefab: {fileID: 2580231892027304905, guid: 7a2aa71e823c3d04799873e56c6b5e2d, type: 3}
+  description: I wonder what heating it up will do
+  maxStackSize: 9
+  itemPrefab: {fileID: 2821852916146693845, guid: 984389602b787574eb625e7e42c4078b, type: 3}
+  handItemPrefab: {fileID: 8346474718467662934, guid: a42fc097bf6d68c4f9f9820efa1d2a05, type: 3}
   handLocalPosition: {x: 1, y: 0, z: 1}
-  handLocalRotation: {x: 0, y: 180, z: 0}
-  handLocalScale: {x: 0.1, y: 0.1, z: 0.1}
+  handLocalRotation: {x: 0, y: 0, z: 0}
+  handLocalScale: {x: 100, y: 100, z: 100}

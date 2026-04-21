@@ -187,7 +187,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1de29f1225cbe341aa3f3d56f9726ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  requiredItem: {fileID: 11400000, guid: 840ddab037ae00f4daacc0dc7c181b1c, type: 2}
+  requiredItem: {fileID: 11400000, guid: 86f2e32b2db1d514cac898346cbe1693, type: 2}
   spawnPoints:
   - {fileID: 6463223551240231697}
   - {fileID: 2910068701304956510}

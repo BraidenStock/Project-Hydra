@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7e9109806e412734c806ec1691e6f743, type: 3}
-  m_Name: PickAxe
+  m_Name: Rock
   m_EditorClassIdentifier: 
-  itemName: PickAxe
+  itemName: Rock
   itemIcon: {fileID: 0}
-  description: It's a pickaxe and an axe
-  maxStackSize: 1
-  itemPrefab: {fileID: 8798750400212269216, guid: 31ae5e2a9f91e1f4aad08ea497333851, type: 3}
-  handItemPrefab: {fileID: 2580231892027304905, guid: 7a2aa71e823c3d04799873e56c6b5e2d, type: 3}
+  description: Like a big rock, but small
+  maxStackSize: 9
+  itemPrefab: {fileID: 7011157329598393284, guid: 227b3d70fe84a554ab9b6a9510542972, type: 3}
+  handItemPrefab: {fileID: 2360287851808118608, guid: d6e7865ad8f663d40b66d6e8cd373e71, type: 3}
   handLocalPosition: {x: 1, y: 0, z: 1}
-  handLocalRotation: {x: 0, y: 180, z: 0}
-  handLocalScale: {x: 0.1, y: 0.1, z: 0.1}
+  handLocalRotation: {x: 0, y: 0, z: 0}
+  handLocalScale: {x: 100, y: 100, z: 100}
