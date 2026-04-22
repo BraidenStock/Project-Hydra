@@ -7,6 +7,9 @@ public class Harvestable : MonoBehaviour
     [Header("Required Item")]
     public ItemSO requiredItem;
 
+    [Header("Harvest Range")]
+    public float harvestRange = 50f;
+
     [Header("Spawn Points")]
     public List<GameObject> spawnPoints = new List<GameObject>();
 
@@ -16,7 +19,13 @@ public class Harvestable : MonoBehaviour
     [Header("VFX")]
     public GameObject destroyVFXPrefab;
 
+    [Header("Audio")]
+    public AudioSource audioSource;
+    public float audioVolume = 2f;
+    private AudioClip cachedClip;
+
     private Inventory inventory;
+    private Transform playerTransform;
 
     private void Start()
     {
@@ -24,6 +33,11 @@ public class Harvestable : MonoBehaviour
 
         if (inventory == null)
             Debug.LogError("Inventory not found in scene!");
+
+        playerTransform = inventory?.GetComponent<Transform>();
+
+        if (audioSource != null)
+            cachedClip = audioSource.clip;
     }
 
     private void Update()
@@ -42,15 +56,31 @@ public class Harvestable : MonoBehaviour
         if (!IsPartOfThisObject(hit.collider.gameObject))
             return;
 
+        float distanceToHarvest = Vector3.Distance(Camera.main.transform.position, transform.position);
+        if (distanceToHarvest > harvestRange)
+            return;
+
         ItemSO heldItem = inventory.GetActiveHotbarItem();
 
         if (heldItem != requiredItem || heldItem == null)
             return;
 
+        Vector3 playPos = spawnPoints.Count > 0 ? spawnPoints[0].transform.position : transform.position;
+
         PlayDestroyVFX();
         SpawnItems();
 
-        Destroy(gameObject, 0.05f);
+        Destroy(gameObject);
+
+        PlayHarvestSound(playPos);
+    }
+
+    private void PlayHarvestSound(Vector3 position)
+    {
+        if (cachedClip == null)
+            return;
+
+        AudioSource.PlayClipAtPoint(cachedClip, position);
     }
 
     private void PlayDestroyVFX()

@@ -11,12 +11,14 @@ public class IdleLowpass : MonoBehaviour
     public float muffledCutoff = 800f;
 
     public float smoothSpeed = 3f;
+    public float idleTimeBeforeMuffling = 2f;
 
-    private CharacterController controller;
+    private Rigidbody rb;
+    private float idleTimer = 0f;
 
     void Start()
     {
-        controller = GetComponent<CharacterController>();
+        rb = GetComponent<Rigidbody>();
 
         // start normal
         mixer.SetFloat(parameterName, normalCutoff);
@@ -24,12 +26,21 @@ public class IdleLowpass : MonoBehaviour
 
     void Update()
     {
-        Vector3 vel = controller.velocity;
+        Vector3 vel = rb.linearVelocity;
         vel.y = 0;
 
         bool isMoving = vel.magnitude > 0.1f;
 
-        float target = isMoving ? normalCutoff : muffledCutoff;
+        if (isMoving)
+        {
+            idleTimer = 0f;
+        }
+        else
+        {
+            idleTimer += Time.deltaTime;
+        }
+
+        float target = (idleTimer >= idleTimeBeforeMuffling) ? muffledCutoff : normalCutoff;
 
         mixer.GetFloat(parameterName, out float current);
 
