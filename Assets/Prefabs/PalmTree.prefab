@@ -362,7 +362,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   requiredItem: {fileID: 11400000, guid: 86f2e32b2db1d514cac898346cbe1693, type: 2}
-  harvestRange: 50
+  harvestRange: 30
   spawnPoints:
   - {fileID: 2964156085510281394}
   - {fileID: 5582665212355702779}
