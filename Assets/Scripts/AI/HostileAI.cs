@@ -10,6 +10,8 @@ public class HostileAI : MonoBehaviour
     [SerializeField] private Transform firePoint;
     [SerializeField] private GameObject projectilePrefab;
 
+    private EnemyNoises enemyNoises; // ✅ NEW
+
     [Header("Patrol Settings")]
     [SerializeField] private float patrolRadius = 10f;
     private Vector3 currentPatrolPoint;
@@ -32,6 +34,8 @@ public class HostileAI : MonoBehaviour
     {
         if (navMeshAgent == null)
             navMeshAgent = GetComponent<NavMeshAgent>();
+
+        enemyNoises = GetComponent<EnemyNoises>(); // ✅ NEW
 
         if (navMeshAgent == null)
         {
@@ -70,12 +74,10 @@ public class HostileAI : MonoBehaviour
     }
 
     // -----------------------------
-    // DETECTION (FIXED)
+    // DETECTION
     // -----------------------------
     private void DetectPlayer()
     {
-        if (playerTransform == null) return;
-
         float dist = Vector3.Distance(transform.position, playerTransform.position);
 
         isPlayerVisible = dist <= visionRange;
@@ -95,14 +97,14 @@ public class HostileAI : MonoBehaviour
         {
             PerformChase();
         }
-        else if (isPlayerVisible && isPlayerInRange)
+        else
         {
             PerformAttack();
         }
     }
 
     // -----------------------------
-    // PATROL (FIXED)
+    // PATROL
     // -----------------------------
     private void PerformPatrol()
     {
@@ -149,26 +151,28 @@ public class HostileAI : MonoBehaviour
     // -----------------------------
     private void PerformChase()
     {
-        if (playerTransform == null) return;
-
         navMeshAgent.SetDestination(playerTransform.position);
     }
 
     // -----------------------------
-    // ATTACK (FIXED)
+    // ATTACK
     // -----------------------------
     private void PerformAttack()
     {
-        navMeshAgent.ResetPath(); // FIX: stop properly
+        navMeshAgent.ResetPath();
 
-        if (playerTransform != null)
-        {
-            transform.LookAt(playerTransform);
-        }
+        transform.LookAt(playerTransform);
 
         if (!isOnAttackCooldown)
         {
             FireProjectile();
+
+            // ✅ PLAY ATTACK SOUND
+            if (enemyNoises != null)
+            {
+                enemyNoises.PlayAttackSound();
+            }
+
             StartCoroutine(AttackCooldownRoutine());
         }
     }

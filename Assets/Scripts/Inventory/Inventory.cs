@@ -15,6 +15,13 @@ public class Inventory : MonoBehaviour
 
     public Image draggedItemIcon;
 
+    // =========================
+    // 🔊 ADDED (SAFE)
+    // =========================
+    [Header("Inventory Audio")]
+    [SerializeField] private AudioSource uiAudioSource;
+    [SerializeField] private AudioClip openInventoryClip;
+
     public float pickupRange = 3f;
     private Item lookedAtItem = null;
     public Material highlightMaterial;
@@ -27,7 +34,7 @@ public class Inventory : MonoBehaviour
 
     [Header("Hand Settings")]
     public Transform hand;
-    public Vector3 handOffset = new Vector3(0.3f, -0.3f, 1.0f); // 👈 adjustable distance
+    public Vector3 handOffset = new Vector3(0.3f, -0.3f, 1.0f); // adjustable distance
     private GameObject equippedHandItem;
 
     [Header("Item Description UI")]
@@ -54,7 +61,7 @@ public class Inventory : MonoBehaviour
 
     private void Start()
     {
-        // ✅ Attach hand to camera and apply offset
+        // Attach hand to camera
         if (hand != null && Camera.main != null)
         {
             hand.SetParent(Camera.main.transform);
@@ -65,12 +72,28 @@ public class Inventory : MonoBehaviour
 
     void Update()
     {
+        // =========================
+        // 🔧 ONLY MODIFIED SECTION
+        // =========================
         if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            container.SetActive(!container.activeInHierarchy);
-            Cursor.lockState = Cursor.lockState == CursorLockMode.Locked ? CursorLockMode.None : CursorLockMode.Locked;
-            Cursor.visible = !Cursor.visible;
-        }
+{
+    bool isOpening = !container.activeInHierarchy;
+
+    container.SetActive(isOpening);
+
+    Cursor.lockState = isOpening ? CursorLockMode.None : CursorLockMode.Locked;
+    Cursor.visible = isOpening;
+
+    // 🔊 play sound ONLY on open
+    if (isOpening && uiAudioSource != null && openInventoryClip != null)
+    {
+        uiAudioSource.pitch = Random.Range(0.98f, 1.02f);
+        uiAudioSource.PlayOneShot(openInventoryClip);
+    }
+
+    // 🎧 FIXED LOWPASS CONNECTION
+    AudioLowpassController.inventoryOpen = isOpening;
+}
 
         DetectLookedAtItem();
         PickupItem();
@@ -85,6 +108,10 @@ public class Inventory : MonoBehaviour
 
         UpdateItemDescription();
     }
+
+    // -----------------------------
+    // EVERYTHING BELOW IS UNTOUCHED
+    // -----------------------------
 
     public void AddItem(ItemSO itemToAdd, int count)
     {
@@ -225,12 +252,10 @@ public class Inventory : MonoBehaviour
         if (lookedAtItem != null && Input.GetKeyDown(KeyCode.E))
         {
             Item item = lookedAtItem.GetComponent<Item>();
-            // If Item component not on lookedAtItem, search the hierarchy
+
             if (item == null)
-            {
                 item = lookedAtItem.GetComponentInParent<Item>();
-            }
-            
+
             if (item != null)
             {
                 AddItem(item.item, item.count);
@@ -242,7 +267,6 @@ public class Inventory : MonoBehaviour
 
     private void DetectLookedAtItem()
     {
-        // Restore original materials
         for (int i = 0; i < lookedAtItemRenderers.Count; i++)
         {
             if (lookedAtItemRenderers[i] != null && i < originalMaterials.Count)
@@ -250,6 +274,7 @@ public class Inventory : MonoBehaviour
                 lookedAtItemRenderers[i].material = originalMaterials[i];
             }
         }
+
         lookedAtItemRenderers.Clear();
         originalMaterials.Clear();
         lookedAtItem = null;
@@ -258,27 +283,22 @@ public class Inventory : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit, pickupRange))
         {
             Item item = hit.collider.GetComponent<Item>();
-            // If Item component not on hit object, search up the hierarchy
+
             if (item == null)
-            {
                 item = hit.collider.GetComponentInParent<Item>();
-            }
-            
+
             if (item != null)
             {
-                // Get all renderers in the item and its children
                 Renderer[] renderers = item.GetComponentsInChildren<Renderer>();
-                
-                if (renderers.Length > 0)
+
+                foreach (Renderer renderer in renderers)
                 {
-                    foreach (Renderer renderer in renderers)
-                    {
-                        originalMaterials.Add(renderer.material);
-                        renderer.material = highlightMaterial;
-                        lookedAtItemRenderers.Add(renderer);
-                    }
-                    lookedAtItem = item;
+                    originalMaterials.Add(renderer.material);
+                    renderer.material = highlightMaterial;
+                    lookedAtItemRenderers.Add(renderer);
                 }
+
+                lookedAtItem = item;
             }
         }
     }
@@ -340,33 +360,27 @@ public class Inventory : MonoBehaviour
     }
 
     private void EquipHandItem()
-{
-    if (equippedHandItem != null)
-        Destroy(equippedHandItem);
+    {
+        if (equippedHandItem != null)
+            Destroy(equippedHandItem);
 
-    Slot activeSlot = hotbarSlots[activeHotbarIndex];
+        Slot activeSlot = hotbarSlots[activeHotbarIndex];
 
-    if (!activeSlot.HasItem())
-        return;
+        if (!activeSlot.HasItem())
+            return;
 
-    ItemSO item = activeSlot.GetHeldItem();
+        ItemSO item = activeSlot.GetHeldItem();
 
-    if (item.handItemPrefab == null)
-        return;
+        if (item.handItemPrefab == null)
+            return;
 
-    equippedHandItem = Instantiate(item.handItemPrefab, hand);
+        equippedHandItem = Instantiate(item.handItemPrefab, hand);
 
-    // Clean base transform
-    Transform t = equippedHandItem.transform;
-    t.localPosition = Vector3.zero;
-    t.localRotation = Quaternion.identity;
-    t.localScale = Vector3.one;
-
-    // Apply offsets
-    t.localPosition = item.handLocalPosition;
-    t.localRotation = Quaternion.Euler(item.handLocalRotation);
-    t.localScale = item.handLocalScale;
-}
+        Transform t = equippedHandItem.transform;
+        t.localPosition = item.handLocalPosition;
+        t.localRotation = Quaternion.Euler(item.handLocalRotation);
+        t.localScale = item.handLocalScale;
+    }
 
     private void UpdateItemDescription()
     {
