@@ -1054,6 +1054,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7930763268584304534}
+  - component: {fileID: 2740831123654199333}
   m_Layer: 0
   m_Name: Enivronment
   m_TagString: Untagged
@@ -1084,6 +1085,23 @@ Transform:
   - {fileID: 5311766883536085183}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2740831123654199333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8241196951996312166}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8ae2b236de8b8a479205b61d423c867, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mixer: {fileID: 24100000, guid: 8f0eb11cbe633a24ab11e1927d6fb436, type: 2}
+  defaultSnapshot: {fileID: 24500006, guid: 8f0eb11cbe633a24ab11e1927d6fb436, type: 2}
+  zoneSnapshot: {fileID: 0}
+  sceneSnapshots: []
+  transitionTime: 1.5
 --- !u!1 &8440619150541788297
 GameObject:
   m_ObjectHideFlags: 0

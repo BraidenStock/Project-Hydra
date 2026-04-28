@@ -28,11 +28,8 @@ public class Health : MonoBehaviour
     }
 
     private void Die()
-    {
-        isDead = true;
-        Debug.Log($"{gameObject.name} died");
-
-        // TEMP: destroy object (replace later for player/enemy logic)
-        Destroy(gameObject);
-    }
+{
+    isDead = true;
+    Debug.Log($"{gameObject.name} died");
+}
 }
