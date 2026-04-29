@@ -15,7 +15,7 @@ MonoBehaviour:
   itemName: Rock
   itemIcon: {fileID: 0}
   description: Like a big rock, but small
-  maxStackSize: 9
+  maxStackSize: 1
   itemPrefab: {fileID: 7011157329598393284, guid: 227b3d70fe84a554ab9b6a9510542972, type: 3}
   handItemPrefab: {fileID: 2360287851808118608, guid: d6e7865ad8f663d40b66d6e8cd373e71, type: 3}
   handLocalPosition: {x: 1, y: 0, z: 1}

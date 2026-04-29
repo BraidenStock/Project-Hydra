@@ -43,6 +43,11 @@ public class Inventory : MonoBehaviour
     public TextMeshProUGUI itemDescriptionNameText;
     public TextMeshProUGUI itemDescriptionText;
 
+    //Crafting
+    public List<CraftingRecipe> craftingRecipes = new List<CraftingRecipe>();
+    public Transform craftingGrid;
+    public GameObject craftingButtonPrefab;
+
     private List<Slot> inventorySlots = new List<Slot>();
     private List<Slot> hotbarSlots = new List<Slot>();
     private List<Slot> allSlots = new List<Slot>();
@@ -57,6 +62,8 @@ public class Inventory : MonoBehaviour
 
         allSlots.AddRange(inventorySlots);
         allSlots.AddRange(hotbarSlots);
+
+        PopulateCraftingGrid();
     }
 
     private void Start()
@@ -76,24 +83,24 @@ public class Inventory : MonoBehaviour
         // 🔧 ONLY MODIFIED SECTION
         // =========================
         if (Input.GetKeyDown(KeyCode.Tab))
-{
-    bool isOpening = !container.activeInHierarchy;
+        {
+            bool isOpening = !container.activeInHierarchy;
 
-    container.SetActive(isOpening);
+            container.SetActive(isOpening);
 
-    Cursor.lockState = isOpening ? CursorLockMode.None : CursorLockMode.Locked;
-    Cursor.visible = isOpening;
+            Cursor.lockState = isOpening ? CursorLockMode.None : CursorLockMode.Locked;
+            Cursor.visible = isOpening;
 
-    // 🔊 play sound ONLY on open
-    if (isOpening && uiAudioSource != null && openInventoryClip != null)
-    {
-        uiAudioSource.pitch = Random.Range(0.98f, 1.02f);
-        uiAudioSource.PlayOneShot(openInventoryClip);
-    }
+            // 🔊 play sound ONLY on open
+            if (isOpening && uiAudioSource != null && openInventoryClip != null)
+            {
+                uiAudioSource.pitch = Random.Range(0.98f, 1.02f);
+                uiAudioSource.PlayOneShot(openInventoryClip);
+            }
 
-    // 🎧 FIXED LOWPASS CONNECTION
-    AudioLowpassController.inventoryOpen = isOpening;
-}
+            // 🎧 FIXED LOWPASS CONNECTION
+            AudioLowpassController.inventoryOpen = isOpening;
+        }
 
         DetectLookedAtItem();
         PickupItem();
@@ -133,7 +140,11 @@ public class Inventory : MonoBehaviour
                     remainingCount -= amountToAdd;
 
                     if (remainingCount <= 0)
+                    {
+                        PopulateCraftingGrid();
                         return;
+                    }
+
                 }
             }
         }
@@ -148,7 +159,10 @@ public class Inventory : MonoBehaviour
                 remainingCount -= amountToPlace;
 
                 if (remainingCount <= 0)
+                {
+                    PopulateCraftingGrid();
                     return;
+                }
             }
         }
 
@@ -156,6 +170,7 @@ public class Inventory : MonoBehaviour
         {
             Debug.Log("Not enough space to add all items. " + remainingCount + " items could not be added.");
         }
+        PopulateCraftingGrid();
     }
 
     private void StartDrag()
@@ -357,6 +372,7 @@ public class Inventory : MonoBehaviour
 
         activeSlot.ClearSlot();
         EquipHandItem();
+        PopulateCraftingGrid();
     }
 
     private void EquipHandItem()
@@ -413,5 +429,88 @@ public class Inventory : MonoBehaviour
             return activeSlot.GetHeldItem();
 
         return null;
+    }
+
+    private void PopulateCraftingGrid()
+    {
+        for (int i = craftingGrid.childCount - 1; i >= 0; i--)
+        {
+            Destroy(craftingGrid.GetChild(i).gameObject);
+        }
+
+        foreach (CraftingRecipe recipe in craftingRecipes)
+        {
+            GameObject button = Instantiate(craftingButtonPrefab, craftingGrid);
+
+            Image image = button.transform.GetChild(0).GetComponent<Image>();
+            image.sprite = recipe.result.itemIcon;
+
+            Button btn = button.GetComponent<Button>();
+
+            btn.interactable = CanCraft(recipe);
+            btn.onClick.RemoveAllListeners();
+            btn.onClick.AddListener(() => Craft(recipe));
+        }
+    }
+
+    public void Craft(CraftingRecipe recipe)
+    {
+        if (!CanCraft(recipe))
+        {
+            return;
+        }
+
+        ConsumeIngredients(recipe);
+        AddItem(recipe.result, recipe.resultAmount);
+
+        PopulateCraftingGrid();
+    }
+
+    public void ConsumeIngredients(CraftingRecipe recipe)
+    {
+        foreach (var ingredient in recipe.ingredients)
+        {
+            int remaining = ingredient.amount;
+
+            foreach (Slot slot in allSlots)
+            {
+                if (!slot.HasItem()) continue;
+                if (!slot.GetHeldItem().Equals(ingredient.item)) continue;
+
+                int take = Mathf.Min(slot.GetHeldItemCount(), remaining);
+                slot.SetHeldItem(slot.GetHeldItem(), slot.GetHeldItemCount() - take);
+
+                if (slot.GetHeldItemCount() <= 0)
+                {
+                    slot.ClearSlot();
+                }
+
+                remaining -= take;
+                if (remaining <= 0) break;
+            }
+        }
+    }
+
+    public bool CanCraft(CraftingRecipe recipe)
+    {
+        foreach (Ingredient ingredient in recipe.ingredients)
+        {
+            int totalFound = 0;
+
+            foreach (Slot slot in allSlots)
+            {
+                if (slot.HasItem() && slot.GetHeldItem() == ingredient.item)
+                {
+                    totalFound += slot.GetHeldItemCount();
+                }
+            }
+
+            if (totalFound < ingredient.amount)
+            {
+                return false;
+            }
+
+        }
+        return true;
     }
 }

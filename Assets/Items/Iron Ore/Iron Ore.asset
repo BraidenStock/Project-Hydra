@@ -15,7 +15,7 @@ MonoBehaviour:
   itemName: Iron Ore
   itemIcon: {fileID: 0}
   description: I wonder what heating it up will do
-  maxStackSize: 9
+  maxStackSize: 1
   itemPrefab: {fileID: 2821852916146693845, guid: 984389602b787574eb625e7e42c4078b, type: 3}
   handItemPrefab: {fileID: 8346474718467662934, guid: a42fc097bf6d68c4f9f9820efa1d2a05, type: 3}
   handLocalPosition: {x: 1, y: 0, z: 1}
