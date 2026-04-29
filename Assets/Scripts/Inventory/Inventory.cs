@@ -47,6 +47,7 @@ public class Inventory : MonoBehaviour
     public List<CraftingRecipe> craftingRecipes = new List<CraftingRecipe>();
     public Transform craftingGrid;
     public GameObject craftingButtonPrefab;
+    public GameObject itemNeededUIPrefab;
 
     private List<Slot> inventorySlots = new List<Slot>();
     private List<Slot> hotbarSlots = new List<Slot>();
@@ -450,6 +451,13 @@ public class Inventory : MonoBehaviour
             btn.interactable = CanCraft(recipe);
             btn.onClick.RemoveAllListeners();
             btn.onClick.AddListener(() => Craft(recipe));
+
+            foreach (Ingredient ingredient in recipe.ingredients)
+            {
+                GameObject neededItem = Instantiate(itemNeededUIPrefab, button.transform.GetChild(1));
+                neededItem.GetComponent<Image>().sprite = ingredient.item.itemIcon;
+                neededItem.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "x" + ingredient.amount.ToString();
+            }
         }
     }
 
