@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6417895755430510082}
   - component: {fileID: -8834873100053882532}
+  - component: {fileID: -6797492406375708819}
   m_Layer: 0
   m_Name: Camp Fire
   m_TagString: Untagged
@@ -132,6 +133,23 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &-6797492406375708819
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1738282661655614790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d8a0d4607339054d9bbceed4c7a7fee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 10
+  healPerSecond: 10
+  targetLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!1001 &2629004641580916400
 PrefabInstance:
   m_ObjectHideFlags: 0

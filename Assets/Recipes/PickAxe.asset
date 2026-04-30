@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c455c028378b7f428a511db58845f92, type: 3}
+  m_Name: PickAxe
+  m_EditorClassIdentifier: 
+  ingredients:
+  - item: {fileID: 11400000, guid: b9b40c865028ece47940ab3c0a26234d, type: 2}
+    amount: 1
+  - item: {fileID: 11400000, guid: 9f9f1b59c61e7c042bdc8f7bc56c9153, type: 2}
+    amount: 1
+  - item: {fileID: 11400000, guid: e7b1b0a7d08f1df4c82860ccd809bf4d, type: 2}
+    amount: 1
+  result: {fileID: 11400000, guid: 86f2e32b2db1d514cac898346cbe1693, type: 2}
+  resultAmount: 0

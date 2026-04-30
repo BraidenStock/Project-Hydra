@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Iron Ore
   m_EditorClassIdentifier: 
   itemName: Iron Ore
-  itemIcon: {fileID: 0}
+  itemIcon: {fileID: 21300000, guid: 2ff15dc6b96e7e843ad43b24d200ae32, type: 3}
   description: I wonder what heating it up will do
   maxStackSize: 1
   itemPrefab: {fileID: 2821852916146693845, guid: 984389602b787574eb625e7e42c4078b, type: 3}
@@ -21,3 +21,5 @@ MonoBehaviour:
   handLocalPosition: {x: 1, y: 0, z: 1}
   handLocalRotation: {x: 0, y: 0, z: 0}
   handLocalScale: {x: 100, y: 100, z: 100}
+  doesDamage: 0
+  damageAmount: 10

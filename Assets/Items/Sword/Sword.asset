@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7e9109806e412734c806ec1691e6f743, type: 3}
-  m_Name: Rock
+  m_Name: Sword
   m_EditorClassIdentifier: 
-  itemName: Rock
-  itemIcon: {fileID: 21300000, guid: bc182a4f940db0449a4ace6aa08bf8f8, type: 3}
-  description: Like a big rock, but small
+  itemName: Sword
+  itemIcon: {fileID: 21300000, guid: 03bf0c4551c47164a8fb898ad576b7ab, type: 3}
+  description: The mighty Blue Steel Sword(tm)
   maxStackSize: 1
-  itemPrefab: {fileID: 7011157329598393284, guid: 227b3d70fe84a554ab9b6a9510542972, type: 3}
-  handItemPrefab: {fileID: 2360287851808118608, guid: d6e7865ad8f663d40b66d6e8cd373e71, type: 3}
-  handLocalPosition: {x: 1, y: 0, z: 1}
+  itemPrefab: {fileID: 5815616728861822382, guid: 7c3f94230da1f004d964c339f627c106, type: 3}
+  handItemPrefab: {fileID: 1260111313572507614, guid: 6824697a002c1f346a38cd57ecef4a92, type: 3}
+  handLocalPosition: {x: 2, y: -1, z: 2}
   handLocalRotation: {x: 0, y: 0, z: 0}
-  handLocalScale: {x: 100, y: 100, z: 100}
-  doesDamage: 0
+  handLocalScale: {x: 0.15, y: 0.15, z: 0.15}
+  doesDamage: 1
   damageAmount: 10

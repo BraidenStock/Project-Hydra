@@ -47,6 +47,8 @@ GameObject:
   - component: {fileID: 8540864489671344958}
   - component: {fileID: 1270972212481117420}
   - component: {fileID: 8510632927284543847}
+  - component: {fileID: 6844917000311427230}
+  - component: {fileID: -4561210434875226246}
   m_Layer: 0
   m_Name: Crabby
   m_TagString: Untagged
@@ -302,6 +304,38 @@ MonoBehaviour:
   minIdleDelay: 3
   maxIdleDelay: 8
   attackClip: {fileID: 8300000, guid: da4ccdef8fffb474cb5d667989e5648f, type: 3}
+--- !u!114 &6844917000311427230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4051908107540220507}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36c9ab22f6f4e84408873af83600c5ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 50
+  currentHealth: 50
+  isDead: 0
+--- !u!114 &-4561210434875226246
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4051908107540220507}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d5a981f6c9f4664dbcaf3d621a19c00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: {fileID: 6844917000311427230}
+  deathVFXPrefab: {fileID: 2518180820376512844, guid: 97144a3d5b42f7748aa135535ed8f836, type: 3}
+  destroyDelay: 0.2
+  flashColor: {r: 0.6493546, g: 0.23113209, b: 1, a: 1}
+  flashDuration: 0.1
 --- !u!1001 &5825354503533783752
 PrefabInstance:
   m_ObjectHideFlags: 0
